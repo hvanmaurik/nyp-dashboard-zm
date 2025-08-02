@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>New York Pizza - KPI Upload</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: #2c2c2c;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: #2c2c2c;
+      text-align: center;
+    }
+    
+    .header {
+      background: #009647;
+      border-radius: 20px;
+      padding: 30px 25px;
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .logo {
+      width: 200px;
+      height: 60px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .logo img {
+      width: 100%;
+      height: auto;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    
+    .loading-section {
+      background: #404040;
+      border-radius: 20px;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .pizza-loader {
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+    
+    .pizza-animation {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #22a049 0%, #1a7a3e 100%);
+      border-radius: 20px;
+      position: relative;
+      animation: float 3s ease-in-out infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(34, 160, 73, 0.3);
+      transform-style: preserve-3d;
+    }
+    
+    .pizza-animation::before {
+      content: '🛵';
+      font-size: 45px;
+      animation: pulse-icon 2s ease-in-out infinite;
+      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+    }
+    
+    .pizza-animation::after {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      background: linear-gradient(45deg, #22a049, #1a7a3e, #22a049, #1a7a3e);
+      border-radius: 25px;
+      z-index: -1;
+      animation: rotate-border 4s linear infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotateX(0deg); }
+      50% { transform: translateY(-15px) rotateX(10deg); }
+    }
+    
+    @keyframes pulse-icon {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    @keyframes rotate-border {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loading-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+    }
+    
+    .dot {
+      width: 12px;
+      height: 12px;
+      background: #009647;
+      border-radius: 50%;
+      margin: 0 5px;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+    
+    .dot:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+    
+    .dot:nth-child(3) {
+      animation-delay: 0.6s;
+    }
+    
+    @keyframes pulse {
+      0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+      }
+      40% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+    }
+    
+    .status-card {
+      background: #009647;
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .status-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #009647, #007a39, #009647);
+      border-radius: 18px;
+      z-index: -1;
+      animation: border-glow 2s linear infinite;
+    }
+    
+    @keyframes border-glow {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+    
+    .status-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .status-text {
+      font-size: 16px;
+      line-height: 1.5;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      margin-top: 20px;
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ffffff, rgba(255, 255, 255, 0.8));
+      border-radius: 10px;
+      animation: progress 20s linear infinite;
+    }
+    
+    @keyframes progress {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+    
+    .timer {
+      background: #404040;
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #4ade80;
+    }
+    
+    .timer-text {
+      font-size: 14px;
+      color: #ccc;
+      margin-top: 5px;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+    }
+    
+    .footer-text {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+    
+    .tagline {
+      font-size: 16px;
+      color: #009647;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <img src="NYPlogo.png" alt="New York Pizza Logo" />
+      </div>
+    </div>
+
+    <div class="loading-section">
+      <div class="pizza-loader">
+        <div class="pizza-animation"></div>
+      </div>
+      
+      <div class="loading-dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+
+    <div class="status-card">
+      <div class="status-title">DASHBOARD ANALYSE</div>
+      <div class="status-text">
+        Je KPI's worden verwerkt....<br>
+        Even geduld aub
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="timer">
+      <div id="countdown">20</div>
+      <div class="timer-text">seconden resterend</div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-text">Optimaliseren van jouw resultaten...</div>
+      <div class="tagline">It's the dough! Our dough, our secret.</div>
+    </div>
+  </div>
+
+  <script>
+    // Countdown timer
+    let timeLeft = 20;
+    const countdownElement = document.getElementById('countdown');
+    
+    const timer = setInterval(() => {
+      timeLeft--;
+      countdownElement.textContent = timeLeft;
+      
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        countdownElement.textContent = 'Klaar!';
+        document.querySelector('.timer-text').textContent = 'Analyse voltooid';
+        
+        // Redirect naar Zoetermeer dashboard na 1 seconde
+        setTimeout(() => {
+          window.location.href = 'https://dagscore.nypzoetermeer.nl/';
+        }, 1000);
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
